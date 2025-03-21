@@ -1,0 +1,23 @@
+resource_group_name="Koyetech-Sanbox-rg"
+location="East US"
+tags= {
+  environment = "sandbox"
+  ehr="EPIC"
+}
+tenant_id = "3cf75cdd-8eb3-4301-a693-07a1605848ce"
+keyVaultName = "onpoint-async"
+storageAccountName = "onpointasync"
+account_tier = "Standard"
+account_replication_type = "RAGRS"
+enable_blob_encryption = true
+delete_retention_days = 7
+enable_queue_encryption = true
+queue_cmk_status = "Microsoft.Storage"
+enable_table_encryption = true
+table_cmk_status = "Microsoft.Storage"
+hns_enabled = true
+acrName = "onpointasync"
+logWorkspaceName = "onpointenvironment"
+envName = "onpointenvironment"
+containerName = "onpointasync"
+app_insights_name = "onpointasyncappinsights"

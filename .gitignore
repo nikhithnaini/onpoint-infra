@@ -1,0 +1,17 @@
+# Terraform state and plan files (contain sensitive data)
+*.tfstate
+*.tfstate.backup
+*.tfvars.json
+
+# Terraform execution plan
+*.tfplan
+provider.tf
+# Terraform crash logs
+crash.log
+
+# Terraform lock files (local state lock)
+.terraform.lock.hcl
+.terraform/
+
+# Terraform provider binaries
+.terraform/providers/
