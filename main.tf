@@ -6,6 +6,30 @@ module "resourceGroup" {
     for key, value in var.tags : key => value
   }
 }
+module "vnet" {
+  source = "./modules/virtualNetwork"
+  vnet_name = var.vnet_name
+  location = module.resourceGroup.location
+  resource_group_name = module.resourceGroup.resource_group_name
+  tags = {
+    for key, value in var.tags : key => value
+  }
+}
+
+module "subnet" {
+  source = "./modules/subnet"
+  subnet_name = var.subnet_name
+  api_name = var.api_name
+  api_subnet_address_prefixes = var.api_subnet_address_prefixes
+  location = module.resourceGroup.location
+  resource_group_name = module.resourceGroup.resource_group_name
+  vnet_name = module.vnet.vnet_name
+  subnet_address_prefixes = var.subnet_address_prefixes
+  tags = {
+    for key, value in var.tags : key => value
+  }
+}
+
 module "keyVault" {
   source              = "./modules/keyVault"
   keyVaultName     = var.keyVaultName
@@ -55,7 +79,14 @@ module "envName" {
   envName = var.envName
   resource_group_name = module.resourceGroup.resource_group_name
   location = module.resourceGroup.location
+  infrastructure_subnet_id = module.subnet.subnet_id
   log_analytics_workspace_id = module.logWorkspace.log_analytics_workspace_id
+  depends_on = [
+    module.logWorkspace ,
+    module.subnet.subnet_name # Ensures Log Analytics is created before this
+  ]
+    
+
   tags = {
     for key, value in var.tags : key => value
   }
@@ -73,6 +104,7 @@ module "containerApp" {
   }
   app_insights_connection_string = module.appInsights.app_insights_connection_string
 }
+
 module "appInsights" {
   source = "./modules/appInsights"
   app_insights_name = var.app_insights_name
@@ -85,3 +117,25 @@ module "appInsights" {
   }
   
 }
+
+module "apiManagement" {
+  source = "./modules/apiManagement"
+  apiname = var.apiname
+  location = module.resourceGroup.location
+  resource_group_name = module.resourceGroup.resource_group_name
+  tags = {
+    for key, value in var.tags : key => value
+  }
+  apisubnet_id = module.subnet.apisubnet_id
+  fqdn = module.containerApp.fqdn
+  
+}
+module "networkSecurityGroup" {
+  source = "./modules/networkSecurityGroup"
+  nsg_name = var.nsg_name
+  container_nsg_name = var.container_nsg_name
+  location = module.resourceGroup.location
+  resource_group_name = module.resourceGroup.resource_group_name
+  apisubnet_id = module.subnet.apisubnet_id
+  container_subnet_id = module.subnet.subnet_id
+  }

@@ -122,6 +122,56 @@ variable "app_insights_name" {
   type        = string
   
 }
+variable "vnet_name" {
+  description = "Name of the virtual network"
+  type        = string  
+  
+}
+variable "subnet_name" {
+  description = "Name of the subnet"
+  type        = string  
+  
+}
+variable "subnet_address_prefixes" {
+  description = "Address prefixes for the subnet"
+  type        = list(string)  
+  
+}
+variable "api_name" {
+  description = "name of api subnet"
+  type = string
+}
+variable "api_subnet_address_prefixes" {
+  description = "Address prefixes for the api subnet"
+  type        = list(string)
+  
+}
+variable "apiname" {
+  description = "name of api subnet"
+  type = string
+  
+}
+variable "nsg_name" {
+  description = "name of api subnet"
+  type = string
+  
+}
+variable "container_nsg_name" {
+  description = "name of api subnet"
+  type = string
+  
+}
+# variable "infrastructure_subnet_id" {
+#   description = "The ID of the subnet"
+#   type        = string
+  
+# }
+# variable "subnet_id" {
+#   description = "The ID of the subnet"
+#   type        = string
+  
+# }
+
 # variable "container_app_environment_id" {
 #   description = "The ID of the Log Analytics Workspace"
 #   type        = string

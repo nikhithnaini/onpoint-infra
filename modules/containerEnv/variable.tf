@@ -21,3 +21,8 @@ variable "tags" {
   description = "A map of tags to add to the resource group"
   type        = map(string)
 }
+variable "infrastructure_subnet_id" {
+  description = "The ID of the subnet"
+  type        = string
+  
+}

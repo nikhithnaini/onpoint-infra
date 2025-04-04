@@ -3,13 +3,16 @@ resource "azurerm_container_app" "example" {
   container_app_environment_id = var.container_app_environment_id
   resource_group_name          = var.resource_group_name
   revision_mode                = "Single"
-
+  identity {
+    type = "SystemAssigned"
+  }
+  
   tags = {
     for key, value in var.tags : key => value
   }
 
  ingress {
-    external_enabled = true  
+    external_enabled = false
     target_port      = 80   
     transport        = "auto" 
 
@@ -20,6 +23,8 @@ resource "azurerm_container_app" "example" {
   }
 
   template {
+    min_replicas = 1   # ✅ Ensures at least 1 instance is always running
+    max_replicas = 5
     container {
       name   = var.acrName
       image  = "nginx:latest"  
@@ -29,6 +34,9 @@ resource "azurerm_container_app" "example" {
         name  = "APPLICATIONINSIGHTS_CONNECTION_STRING"
         value = var.app_insights_connection_string
       }
+      
     }
+    
   }
+  
 }
